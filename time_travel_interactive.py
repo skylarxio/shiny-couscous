@@ -134,7 +134,14 @@ def main():
         print(f"{RED}ERROR: Tanggal mulai tidak boleh lebih lambat dari tanggal selesai.{RST}")
         return
         
+    # --- PROMPT BARU UNTUK AUTHOR/EMAIL ---
     print("-" * 50)
+    print(f"{CYAN}Konfigurasi Author Commit (Penting untuk Grafik GitHub){RST}")
+    author_name = input(f"{BLUE}Masukkan NAMA Anda (Harus sama dengan GitHub): {RST}").strip()
+    author_email = input(f"{BLUE}Masukkan EMAIL Anda (Harus sama dengan GitHub): {RST}").strip()
+    print("-" * 50)
+    # --- AKHIR PROMPT BARU ---
+        
     print(f"{BLUE}Pilih Mode Commit:{RST}")
     print("1. Mode Cepat (Membuat tepat 1 commit per hari. Proses sangat cepat)")
     print("2. Mode Realistis (Membuat jumlah acak per hari. Proses lebih lama)")
@@ -180,6 +187,13 @@ def main():
                 commit_env['GIT_AUTHOR_DATE'] = date_str
                 commit_env['GIT_COMMITTER_DATE'] = date_str
                 
+                # --- PENGATURAN AUTHOR DENGAN INPUT PENGGUNA ---
+                commit_env['GIT_AUTHOR_NAME'] = author_name
+                commit_env['GIT_AUTHOR_EMAIL'] = author_email
+                commit_env['GIT_COMMITTER_NAME'] = author_name
+                commit_env['GIT_COMMITTER_EMAIL'] = author_email
+                # --- AKHIR PENGATURAN AUTHOR ---
+
                 subprocess.run(
                     ['git', 'commit', '-m', f"Auto-commit for {current_date.date()} [UTC]"],
                     env=commit_env, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
